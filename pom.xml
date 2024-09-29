@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>io.snowishyl</groupId>
+    <artifactId>goodbuy.socket</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>websocket</module>
+    </modules>
+    <modelVersion>4.0.0</modelVersion>
+    <developers>
+        <developer>
+            <id>feiwoscun</id>
+            <name>feiwoscun</name>
+            <email>2825097536@qq.com</email>
+            <url>https://github.com/feiWoSCun</url>
+            <roles>
+                <role>Lead</role>
+                <role>Committer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- netty -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <properties>
+        <hutool-all.version>
+            5.8.18
+        </hutool-all.version>
+        <netty-all.version>
+            4.1.76.Final
+        </netty-all.version>
+        <spring-boot.starter.version>
+            3.2.4
+        </spring-boot.starter.version>
+        <!-- Project -->
+        <java.version>17</java.version>
+        <revision>1.0-SNAPSHOT</revision>
+        <lombok.version>1.18.22</lombok.version>
+        <!-- Maven plugins -->
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>
