@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
  * @description:
  */
 
-
 @Slf4j
 @ChannelHandler.Sharable
 public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
@@ -29,7 +28,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     // 当web客户端连接后，触发该方法
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        this.webSocketService = getService();
+            this.webSocketService = getService();
     }
 
     // 客户端离线
@@ -65,8 +64,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
+        if (evt instanceof IdleStateEvent idleStateEvent) {
             // 读空闲
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 // 关闭用户的连接
@@ -85,7 +83,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     // 处理异常
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.warn("异常发生，异常消息 ={}", cause);
+        log.warn("异常发生，异常消息 ", cause);
         ctx.channel().close();
     }
 

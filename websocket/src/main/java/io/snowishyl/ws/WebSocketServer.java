@@ -17,10 +17,8 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.NettyRuntime;
 import io.netty.util.concurrent.Future;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
+
 /**
  * @author: feiwoscun
  * @date: 2024/9/22
@@ -28,19 +26,17 @@ import org.springframework.context.annotation.Configuration;
  * @description:
  */
 @Slf4j
-@Configuration
 public class WebSocketServer {
     public static final int WEB_SOCKET_PORT = 8090;
     public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();
     // 创建线程池执行器
-    private final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+    private final EventLoopGroup bossGroup = new NioEventLoopGroup(2);
     private final EventLoopGroup workerGroup = new NioEventLoopGroup(NettyRuntime.availableProcessors());
 
     /**
      *
      * @throws InterruptedException
      */
-    @PostConstruct
     public void start() throws InterruptedException {
         run();
     }
@@ -48,7 +44,6 @@ public class WebSocketServer {
     /**
      * 销毁
      */
-    @PreDestroy
     public void destroy() {
         Future<?> future = bossGroup.shutdownGracefully();
         Future<?> future1 = workerGroup.shutdownGracefully();
