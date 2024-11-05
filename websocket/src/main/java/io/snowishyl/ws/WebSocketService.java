@@ -8,6 +8,7 @@ import io.netty.channel.Channel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -73,27 +74,31 @@ public class WebSocketService {
      * 发送消息执行回调函数
      *
      * @param msg
-     * @param consumer
+     * @param successConsumer
      * @return
      */
-    public static synchronized ResultType sendMsg(Msg msg, Consumer<ResultType> consumer) {
+    public static ResultType sendMsg(Msg msg, Consumer<ResultType> successConsumer, BiConsumer<ResultType, Channel> failureConsumer) {
 
-        String to = MsgUtil.getTokenByUser(msg.getUserTo());
+        String to = MsgWrapper.getTokenByUser(msg.getUserTo());
         List<Channel> userChannels = getUserChannels(to);
         ResultType resultType = ResultType.success;
-        try {
-            for (Channel userChannel : userChannels) {
+        Channel loseChannel = null;
+        for (Channel userChannel : userChannels) {
+            try {
                 sendMsg(userChannel, msg);
+            } catch (Exception ignore) {
+                resultType = ResultType.failure;
+                loseChannel = userChannel;
             }
-        } catch (Exception ignored) {
-            resultType = ResultType.failure;
+
         }
 
         //执行回调函数
-        if (consumer != null && resultType.equals(ResultType.success)) {
-            AsyncTool.doAsync(consumer, ResultType.success);
+        if (successConsumer != null && resultType.equals(ResultType.success)) {
+            AsyncTool.doAsync(successConsumer, ResultType.success);
         } else {
-            AsyncTool.doAsync(consumer, ResultType.failure);
+            AsyncTool.doAsync(failureConsumer, ResultType.failure, loseChannel);
+            return ResultType.failure;
         }
         return ResultType.success;
     }

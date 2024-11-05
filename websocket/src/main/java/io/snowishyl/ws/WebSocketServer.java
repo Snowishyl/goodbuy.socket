@@ -17,7 +17,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.NettyRuntime;
 import io.netty.util.concurrent.Future;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 
 /**
  * @author: feiwoscun
@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @email: 2825097536@qq.com
  * @description:
  */
-@Slf4j
+@Log4j
 public class WebSocketServer {
     public static final int WEB_SOCKET_PORT = 8090;
     public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();

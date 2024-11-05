@@ -1,9 +1,12 @@
 package io.snowishyl.ws;
 
+import io.netty.channel.Channel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -12,6 +15,7 @@ import java.util.function.Consumer;
  * @email: 2825097536@qq.com
  * @description:
  */
+@Slf4j
 public class AsyncTool {
 
     @Getter
@@ -30,8 +34,12 @@ public class AsyncTool {
                 new ThreadPoolExecutor.AbortPolicy());
     }
 
-    public static void doAsync(Consumer<ResultType> consumer, final ResultType resultType) {
+    public static void doAsync(final Consumer<ResultType> consumer, final ResultType resultType) {
         executor.execute(() -> consumer.accept(resultType));
+    }
+
+    public static void doAsync(final BiConsumer<ResultType, Channel> consumer, final ResultType resultType, final Channel channel) {
+        executor.execute(() -> consumer.accept(resultType, channel));
     }
 
     public static <R> R doSync(Callable<R> callable) {
@@ -49,18 +57,18 @@ class MythreadFactory implements ThreadFactory {
     }
 
     @Override
-    public Thread newThread(Runnable r) {
+    public Thread newThread(@NonNull Runnable r) {
         Thread thread = threadFactory.newThread(r);
-        thread.setUncaughtExceptionHandler(new ThreadExecptionHandler());
+        thread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
         return thread;
     }
 }
 
 @Slf4j
-class ThreadExecptionHandler implements Thread.UncaughtExceptionHandler {
+class ThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        log.error("线程：" + t.getName() + "发生错误，", e);
+        log.error("线程：{}发生错误", t.getName(), e);
     }
 }

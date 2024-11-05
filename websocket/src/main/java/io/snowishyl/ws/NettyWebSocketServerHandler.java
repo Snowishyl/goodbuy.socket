@@ -96,15 +96,6 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         WSBaseReq wsBaseReq = JSONUtil.toBean(msg.text(), WSBaseReq.class);
         WSReqTypeEnum wsReqTypeEnum = WSReqTypeEnum.of(wsBaseReq.getType());
-        switch (wsReqTypeEnum) {
-            case LOGIN:
-                this.webSocketService.handleLoginReq(ctx.channel());
-                log.info("请求二维码 = " + msg.text());
-                break;
-            case HEARTBEAT:
-                break;
-            default:
-                log.info("未知类型");
-        }
+
     }
 }

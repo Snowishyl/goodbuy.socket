@@ -6,7 +6,7 @@ package io.snowishyl.ws;
  * @email: 2825097536@qq.com
  * @description:
  */
-public class MsgUtil {
+public class MsgWrapper {
     //todo grpc
     public static User getUserByToken(String token) {
         return new User();
